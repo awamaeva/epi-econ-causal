@@ -1,5 +1,5 @@
+# **Bridging Causal Inference in Epidemiology and Econometrics**
 
-# **epi-econ-causal**
 
 **Replication and simulation code for the working paper:**
 **“A Unified Causal Inference Framework Bridging Epidemiology and Econometrics”**
@@ -58,9 +58,9 @@ File:
 | Identification Strategy   | Estimator                    |
 | ------------------------- | ---------------------------- |
 | Confounding control (ATT) | Matching                     |
-|                           | IPTW                         |
-|                           | G-computation                |
-|                           | Doubly Robust (AIPTW)        |
+| Confounding control (ATT) | IPTW                         |
+|  Confounding control (ATT)| G-computation                |
+| Confounding control (ATT) | Doubly Robust (AIPTW)        |
 | Panel methods (ATT)       | Difference-in-Differences    |
 | Instrumental Variables    | IV (LATE)                    |
 | Regression Discontinuity  | RDD (local effect at cutoff) |
