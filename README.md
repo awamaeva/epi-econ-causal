@@ -53,7 +53,7 @@ File:
 
 ---
 
-## 📊 Estimators Compared
+## Estimators Compared
 
 | Identification Strategy   | Estimator                    |
 | ------------------------- | ---------------------------- |
