@@ -225,18 +225,51 @@ print(summary_tbl)
 # ============================================================
 # 5) Plot
 # ============================================================
+sim_results_plot <- sim_results %>%
+  mutate(
+    Bias = est - truth,
+    method_label = case_when(
+      method == "Matching" ~ "Matching\n(ATT)",
+      method == "IPTW"     ~ "IPTW\n(ATT)",
+      method == "G-comp"   ~ "G-comp\n(ATT)",
+      method == "DR"       ~ "DR\n(ATT)",
+      method == "DiD"      ~ "DiD\n(ATT,\npanel design)",
+      method == "IV"       ~ "IV\n(LATE,\ncompliers)",
+      method == "RDD"      ~ "RDD\n(Local effect\nat cutoff)",
+      TRUE ~ method
+    ),
+    design_group = case_when(
+      method %in% c("Matching", "IPTW", "G-comp", "DR") ~
+        "ATT under ignorability",
+      method == "DiD" ~
+        "ATT under DiD design",
+      method == "IV" ~
+        "LATE under IV design",
+      method == "RDD" ~
+        "Local effect under RD design",
+      TRUE ~ "Other"
+    )
+  )
 
-sim_results %>%
-  mutate(Bias = est - truth) %>%
-  ggplot(aes(x = method, y = Bias, fill = method)) +
+ggplot(sim_results_plot, aes(x = method_label, y = Bias, fill = method_label)) +
   geom_boxplot(alpha = 0.85) +
   geom_hline(yintercept = 0, linetype = "dashed") +
+  facet_wrap(~ design_group, scales = "free_x", ncol = 2) +
   labs(
-    title = paste0("Bias Across Estimators (R = ", params$R, ", n = ", params$n, ")"),
-    y = "Bias (Estimate - Truth)", x = ""
+    title = paste0(
+      "Bias Across Estimators, Grouped by Estimand and Design ",
+      "(R = ", params$R, ", n = ", params$n, ")"
+    ),
+    subtitle = "Comparisons are meaningful within panels only",
+    y = "Bias (estimate - true target)",
+    x = NULL
   ) +
   theme_minimal(base_size = 14) +
-  theme(legend.position = "none")
+  theme(
+    legend.position = "none",
+    strip.text = element_text(face = "bold"),
+    axis.text.x = element_text(size = 10)
+  )
 # ============================================================
 # 5) end
 # ============================================================
